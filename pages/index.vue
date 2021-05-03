@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="text-center">
     <b-overlay
       :show="busy"
       rounded
@@ -8,7 +8,7 @@
       spinner-variant="primary"
       class="d-inline-block"
     >
-      <b-form method="post">
+      <b-form method="post" class="text-left">
         <b-col class="pl-0 pr-0">
           <label for="email">Email address / 信箱</label>
           <b-form-input
@@ -232,5 +232,15 @@ export default {
 <style scoped>
 .hide {
   display: none;
+}
+@media screen and (max-width: 720px){
+  .d-inline-block{
+    width: 100%;
+  }
+}
+@media screen and (min-width: 720px){
+  .d-inline-block{
+    width: 75%;
+  }
 }
 </style>
