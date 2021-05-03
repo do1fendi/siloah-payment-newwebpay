@@ -1,81 +1,96 @@
 <template>
   <b-container>
-    <b-form method="post">
-      <b-col class="pl-0 pr-0">
-        <label for="email">Email address / 信箱</label>
-        <b-form-input
-          type="email"
-          class="form-control"
-          name="email"
-          placeholder="Email"
-          v-model="form.email"
-          :state="valEmailState"
-          ref="em"
-        />
-      </b-col>
-      <b-col class="mt-3 pl-0 pr-0">
-        <label for="exampleInputName">Card Holder Name / 信用卡持卡人姓名</label>
-        <b-form-input
-          type="text"
-          class="form-control"
-          name="name"
-          placeholder="Card Holder Name / 信用卡持卡人姓名"
-          v-model="form.name"
-          :state="valNameState"
-          ref="nm"
-        />
-      </b-col>
-      <b-col class="mt-3 pl-0 pr-0">
-        <label for="contactNumber">Contact Number / 聯絡電話</label>
-        <b-form-input
-          type="text"
-          class="form-control"
-          name="phoneNumber"
-          placeholder="Contact Number"
-          v-model="form.phoneNumber"
-          :state="valPhoneState"
-          ref="ph"
-        />
-      </b-col>
-      <b-form-row class="hide">
-        <b-col class="mt-3 pl-0 pr-0">
+    <b-overlay
+      :show="busy"
+      rounded
+      opacity="0.6"
+      spinner-big
+      spinner-variant="primary"
+      class="d-inline-block"
+    >
+      <b-form method="post">
+        <b-col class="pl-0 pr-0">
+          <label for="email">Email address / 信箱</label>
           <b-form-input
-            type="text"
+            type="email"
             class="form-control"
-            name="amt"
-            v-model="form.amt"
+            name="email"
+            placeholder="Email"
+            v-model="form.email"
+            :state="valEmailState"
+            ref="em"
           />
         </b-col>
         <b-col class="mt-3 pl-0 pr-0">
+          <label for="exampleInputName"
+            >Card Holder Name / 信用卡持卡人姓名</label
+          >
           <b-form-input
             type="text"
             class="form-control"
-            name="orderNumber"
-            v-model="form.orderNumber"
+            name="name"
+            placeholder="Card Holder Name / 信用卡持卡人姓名"
+            v-model="form.name"
+            :state="valNameState"
+            ref="nm"
           />
         </b-col>
-
-      </b-form-row>
-      <b-col class="mt-4 p-0">
-        <b-alert show variant="success">
-          <h3>Detail / 訂單資訊</h3>
-          <hr />
-          Order （訂單編號）: {{ form.orderNumber }} <br />
-          Adult (成人): {{ adultNum }}<br />
-          Kid (小孩): {{ kidNum }}<br /><br />
-          <h5>
-            Total Price （總額）:
-            {{
-              form.amt.toString().replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&,')
-            }}
-            TWD
-          </h5>
-        </b-alert>
-      </b-col>
-      <b-col class="mt-4 p-0 text-right">
-        <b-button variant="warning" type="submit" formaction="https://www.taiwanviptravel.com/payment/newwebpay/">Submit / 送出</b-button>
-      </b-col>
-    </b-form>
+        <b-col class="mt-3 pl-0 pr-0">
+          <label for="contactNumber">Contact Number / 聯絡電話</label>
+          <b-form-input
+            type="text"
+            class="form-control"
+            name="phoneNumber"
+            placeholder="Contact Number"
+            v-model="form.phoneNumber"
+            :state="valPhoneState"
+            ref="ph"
+          />
+        </b-col>
+        <b-form-row class="hide">
+          <b-col class="mt-3 pl-0 pr-0">
+            <b-form-input
+              type="text"
+              class="form-control"
+              name="amt"
+              v-model="form.amt"
+            />
+          </b-col>
+          <b-col class="mt-3 pl-0 pr-0">
+            <b-form-input
+              type="text"
+              class="form-control"
+              name="orderNumber"
+              v-model="form.orderNumber"
+            />
+          </b-col>
+        </b-form-row>
+        <b-col class="mt-4 p-0">
+          <b-alert show variant="success">
+            <h3>Detail / 訂單資訊</h3>
+            <hr />
+            Order （訂單編號）: {{ form.orderNumber }} <br />
+            Adult (成人): {{ adultNum }}<br />
+            Kid (小孩): {{ kidNum }}<br /><br />
+            <h5>
+              Total Price （總額）:
+              {{
+                form.amt.toString().replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&,')
+              }}
+              TWD
+            </h5>
+          </b-alert>
+        </b-col>
+        <b-col class="mt-4 p-0 text-right">
+          <b-button
+            variant="warning"
+            type="submit"
+            formaction="https://www.taiwanviptravel.com/payment/newwebpay/"
+            >Submit / 送出</b-button
+          >
+        </b-col>
+      </b-form>
+    </b-overlay>
   </b-container>
 </template>
 
@@ -85,6 +100,7 @@ import { mapMutations, mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      busy: true,
       adultNum: 0,
       kidNum: 0,
       form: {
@@ -170,6 +186,7 @@ export default {
         this.adultNum = json.adultNum
         this.kidNum = json.kidNum
         this.form.amt = data.accountReceivable
+        this.busy = false
       }
       apiGetPackage()
     },
@@ -213,7 +230,7 @@ export default {
 </script>
 
 <style scoped>
-.hide{
+.hide {
   display: none;
 }
 </style>
