@@ -6,7 +6,7 @@
       opacity="0.6"
       spinner-big
       spinner-variant="primary"
-      class="d-inline-block"
+      class="d-inline-block w-75"
     >
       <b-form method="post" class="text-left">
         <b-col class="pl-0 pr-0">
@@ -177,20 +177,20 @@ export default {
       const apiGetPackage = async () => {
         const res = await this.$axios(config)
         const data = await res.data.response.data[0].fieldData
-        console.log(data)
+        // console.log(data)
         const json = JSON.parse(data.json_byNumber)
         this.form.email = json.register.email
         this.form.phoneNumber =
           json.register.phoneCode + json.register.phoneNumber
         this.form.orderNumber = data.RS_salesNumber
-        this.adultNum = json.adultNum
-        this.kidNum = json.kidNum
+        this.adultNum = data.no_of_adult
+        this.kidNum = data.no_of_kid
         this.form.amt = data.accountReceivable
         this.busy = false
       }
       apiGetPackage()
     },
-    onSubmit() {
+    // onSubmit() {
       // const data= JSON.stringify(this.form)
       // const config = {
       //   methods:'POST',
@@ -204,27 +204,27 @@ export default {
       //   console.log(data)
       // }
       // runApi()
-      const data = JSON.stringify(this.form)
+    //   const data = JSON.stringify(this.form)
 
-      runApi().then((response) => {
-        // const json = JSON.parse(response)
-        console.log(response)
-      })
+    //   runApi().then((response) => {
+    //     // const json = JSON.parse(response)
+    //     console.log(response)
+    //   })
 
-      function runApi() {
-        return fetch('http://localhost/paynewebpay/', {
-          method: 'post',
-          body: data,
-        })
-          .then((res) => res.json())
-          .then(function (data) {
-            return data
-          })
-          .catch((error) => {
-            console.error('Error:', error)
-          })
-      }
-    },
+    //   function runApi() {
+    //     return fetch('https://www.taiwanviptravel.com/payment/newwebpay/', {
+    //       method: 'post',
+    //       body: data,
+    //     })
+    //       .then((res) => res.json())
+    //       .then(function (data) {
+    //         return data
+    //       })
+    //       .catch((error) => {
+    //         console.error('Error:', error)
+    //       })
+    //   }
+    // },
   },
 }
 </script>
@@ -233,7 +233,7 @@ export default {
 .hide {
   display: none;
 }
-@media screen and (max-width: 720px){
+/* @media screen and (max-width: 720px){
   .d-inline-block{
     width: 100%;
   }
@@ -242,5 +242,5 @@ export default {
   .d-inline-block{
     width: 75%;
   }
-}
+} */
 </style>
